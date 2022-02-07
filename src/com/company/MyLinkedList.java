@@ -14,7 +14,6 @@ public class MyLinkedList<T>
         {
             listHead = newNode;
             listTail = newNode;
-
         }
         else
         {
@@ -23,6 +22,39 @@ public class MyLinkedList<T>
             listTail = newNode;
         }
         size++;
+    }
+
+    public boolean add(int index, T element)
+    {
+        if (index<0 || index > size) return false;
+        Node<T> newNode= new Node<>(element);
+        if (index == 0 && listHead == null)
+        {
+            listHead = newNode;
+            listTail = newNode;
+        }
+        else if (index == 0)
+        {
+            if (listHead.forward == null) listTail = newNode;
+            else listHead.forward.back = newNode; // the next node's back link to new
+            newNode.forward = listHead;
+            listHead = newNode;
+        }
+        else
+        {
+            Node<T> currentNode = listHead;
+            for (int i=0; i<(index-1); i++)
+            {
+                currentNode = currentNode.forward;
+            }
+            if (currentNode.forward == null) listTail = newNode;
+            else currentNode.forward.back = newNode; // the next node's back link to new
+            newNode.forward = currentNode.forward; //new node links to next in chain
+            currentNode.forward = newNode; //current node links to the new node
+            newNode.back = currentNode; //new node backward link points to current
+        }
+        size++;
+        return true;
     }
 
     public T get(int index)
